@@ -20,7 +20,7 @@ try:
     USERNAME = sys.argv[1]
     PASSWORD = sys.argv[2]
     DOMAIN = sys.argv[3].strip('/')
-    if sys.arv[4] == 'server':
+    if sys.argv[4] == 'server':
         TERMS = TERMS_SERVER
     elif sys.argv[4] == 'desktop':
         TERMS = TERMS_DESKTOP
