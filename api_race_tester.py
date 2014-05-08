@@ -75,11 +75,16 @@ while True:
         try:
             first_snippet = json['objects'][0]['snippet']
         except KeyError:
-            print_time("    Json was: %s" % json)
-            exit(1)
+            print_time("    KeyError. Json was: %s" % json)
+            if json['error_message'] == u'Sorry, this request could not be processed. Please try again later.':
+                print_time("    Continuing onwards...\n")
+                continue
+            else:
+                print_time("    Unknown json content. Exiting.")
+                exit(1)
 
         if response_is_effed_up(term, first_snippet):
-            print_time("mismatched thing.")
+            print_time("mismatched thing.\n")
             exit(1)
         else:
             print_time(" --- OK! ---\n")
