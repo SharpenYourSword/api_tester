@@ -3,13 +3,14 @@ import requests
 import time
 import sys
 
-TERMS = [
+TERMS_DESKTOP = [
     "income inequality", "Campaign Fundraising", "Broadcasting", "republicans",
     "Spokane", "gang", "fast food", "Foreign Intelligence Surveillance Act",
-    "georgia", "campaign finance", "student privacy",
+    "georgia"]
+
+TERMS_SERVER = ["campaign finance", "student privacy",
     "Early learning", "FISA", "baltimore", "domestic violence", "NFL", "highway",
-    "Tepfer", "diabetes", "Actuary", "energy storage", "RUC"
-]
+    "Tepfer", "diabetes", "Actuary", "energy storage", "RUC"]
 
 
 def print_time(s):
@@ -19,6 +20,10 @@ try:
     USERNAME = sys.argv[1]
     PASSWORD = sys.argv[2]
     DOMAIN = sys.argv[3].strip('/')
+    if sys.arv[4] == 'server':
+        TERMS = TERMS_SERVER
+    elif sys.argv[4] == 'desktop':
+        TERMS = TERMS_DESKTOP
 except IndexError:
     print_time("Usage: api_race_tester.py USER PASS PROTOCOL://DOMAIN[:PORT]")
     print_time("For example: mlissner password https://www.courtlistener.com")
@@ -42,7 +47,7 @@ def url_for(term, DOMAIN):
     """ Make a good URL for the term
     """
     escaped = urllib.quote(term)
-    return "%s/api/rest/v1/search/?&format=json&fields=id,absolute_url,download_url,download_URL,citation,snippet,case_name,case_number,court,court_id,date_filed,docket_number&q=%%22%s%%22&court=scotus,ca1,ca2,ca3,ca4,ca5,ca6,ca7,ca8,ca9,ca10,ca11,cadc,cafc,armfor,cc,uscfc,com,ccpa,cusc,tax,mc,cavc,eca,tecoa,fiscr,reglrailreorgct,cit,usjc,jpml,stp" % (DOMAIN, escaped)
+    return "%s/api/rest/v1/search/?&format=json&q=%%22%s%%22" % (DOMAIN, escaped)
 
 
 def response_is_effed_up(query, snippet):
